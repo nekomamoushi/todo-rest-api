@@ -10,4 +10,6 @@ router.get('/:todoId', todosCtrl.getTodo);
 
 router.post('/', todosCtrl.createTodo);
 
+router.put('/:todoId', todosCtrl.updateToo);
+
 module.exports = router;

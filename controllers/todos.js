@@ -52,3 +52,26 @@ exports.createTodo = (req, res, next) => {
       console.log(error);
     });
 };
+
+exports.updateToo = (req, res, next) => {
+  const todoId = req.params.todoId;
+  const title = req.body.title;
+  const done = req.body.done;
+
+  Todo.findById(todoId)
+    .then((todo) => {
+      if (!todo) {
+        return res.status(404).json({ message: 'Todo Not Found!' });
+      }
+      todo.title = title;
+      todo.done = done;
+      return todo.save();
+    })
+    .then((result) => {
+      res.status(200).json({ message: 'Todo Updated Succesfully!' });
+    })
+    .catch((error) => {
+      console.log('Something went wrong');
+      console.log(error);
+    });
+};
