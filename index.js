@@ -1,11 +1,13 @@
 const express = require('express');
 require('dotenv').config();
 
+const todosRoutes = require('./routes/todos');
+
+const API_VERSION = '/api/v1';
+
 const app = express();
 
-app.get('/', (req, res, next) => {
-  res.send('Hello World');
-});
+app.use(API_VERSION + '/todos', todosRoutes);
 
 app.listen(process.env.PORT || 3000);
 
