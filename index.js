@@ -1,1 +1,11 @@
-console.log("I've you tried to tried to turn it off and on again ?");
+const express = require('express');
+
+const app = express();
+
+app.get('/', (req, res, next) => {
+  res.send('Hello World');
+});
+
+app.listen(3000);
+
+module.exports = app;
