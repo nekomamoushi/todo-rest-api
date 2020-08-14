@@ -75,3 +75,18 @@ exports.updateToo = (req, res, next) => {
       console.log(error);
     });
 };
+
+exports.deleteTodo = (req, res, next) => {
+  const todoId = req.params.todoId;
+
+  Todo.findById(todoId)
+    .then((todo) => {
+      if (!todo) {
+        return res.status(404).json({ message: 'Todo Not Found!' });
+      }
+      return Todo.deleteOne({ _id: todoId });
+    })
+    .then((result) => {
+      res.status(200).json({ message: 'Todo Deleted Succesfully!' });
+    });
+};
