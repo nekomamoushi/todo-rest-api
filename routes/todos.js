@@ -6,4 +6,6 @@ const router = express.Router();
 
 router.get('/', todosCtrl.getTodos);
 
+router.post('/', todosCtrl.createTodo);
+
 module.exports = router;
