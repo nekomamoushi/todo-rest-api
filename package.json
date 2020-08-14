@@ -15,7 +15,8 @@
   "author": "Jerome Pradier",
   "license": "MIT",
   "devDependencies": {
-    "cz-conventional-changelog": "^3.2.0"
+    "cz-conventional-changelog": "^3.2.0",
+    "dotenv": "^8.2.0"
   },
   "config": {
     "commitizen": {
