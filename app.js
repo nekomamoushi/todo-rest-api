@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 const todosRoutes = require('./routes/todos');
@@ -22,5 +23,12 @@ app.use((req, res, next) => {
 });
 
 app.use(API_VERSION + '/todos', todosRoutes);
+
+// Handle errors
+app.use((error, req, res, next) => {
+  const status = error.statusCode || 500;
+  const message = error.message;
+  res.status(status).json({ message: message });
+});
 
 module.exports = app;

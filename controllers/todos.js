@@ -1,20 +1,18 @@
-const todo = require('../models/todo');
-
 const Todo = require('../models/todo');
+const createError = require('../helpers/error');
 
 exports.getTodos = (req, res, next) => {
   Todo.find()
     .then((todos) => {
-      if (!todos) {
-        return res.status(404).json({ message: 'No Todos Found!' });
-      }
       res
         .status(200)
         .json({ message: 'Todos fetched successfully!', todos: todos });
     })
     .catch((error) => {
-      console.log('Something went wrong');
-      console.log(error);
+      if (!error.statusCode) {
+        error.statusCode = 500;
+      }
+      next(error);
     });
 };
 
@@ -23,13 +21,16 @@ exports.getTodo = (req, res, next) => {
   Todo.findById(todoId)
     .then((todo) => {
       if (!todo) {
-        return res.status(404).json({ message: 'Todo Not Found!' });
+        const error = createError('Todo Not Found!', 404);
+        throw error;
       }
       res.status(200).json({ message: 'Todo found!', todo: todo });
     })
     .catch((error) => {
-      console.log('Something went wrong');
-      console.log(error);
+      if (!error.statusCode) {
+        error.statusCode = 500;
+      }
+      next(error);
     });
 };
 
@@ -48,8 +49,10 @@ exports.createTodo = (req, res, next) => {
         .json({ message: 'Todo Created successfully!', todo: todo });
     })
     .catch((error) => {
-      console.log('Something went wrong');
-      console.log(error);
+      if (!error.statusCode) {
+        error.statusCode = 500;
+      }
+      next(error);
     });
 };
 
@@ -61,7 +64,8 @@ exports.updateToo = (req, res, next) => {
   Todo.findById(todoId)
     .then((todo) => {
       if (!todo) {
-        return res.status(404).json({ message: 'Todo Not Found!' });
+        const error = createError('Todo Not Found!', 404);
+        throw error;
       }
       todo.title = title;
       todo.done = done;
@@ -71,8 +75,10 @@ exports.updateToo = (req, res, next) => {
       res.status(200).json({ message: 'Todo Updated Succesfully!' });
     })
     .catch((error) => {
-      console.log('Something went wrong');
-      console.log(error);
+      if (!error.statusCode) {
+        error.statusCode = 500;
+      }
+      next(error);
     });
 };
 
@@ -82,11 +88,18 @@ exports.deleteTodo = (req, res, next) => {
   Todo.findById(todoId)
     .then((todo) => {
       if (!todo) {
-        return res.status(404).json({ message: 'Todo Not Found!' });
+        const error = createError('Todo Not Found!', 404);
+        throw error;
       }
       return Todo.deleteOne({ _id: todoId });
     })
     .then((result) => {
       res.status(200).json({ message: 'Todo Deleted Succesfully!' });
+    })
+    .catch((error) => {
+      if (!error.statusCode) {
+        error.statusCode = 500;
+      }
+      next(error);
     });
 };
