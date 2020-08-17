@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator');
+
 const Todo = require('../models/todo');
 const createError = require('../helpers/error');
 
@@ -37,6 +39,14 @@ exports.getTodo = (req, res, next) => {
 exports.createTodo = (req, res, next) => {
   const title = req.body.title;
   const done = req.body.done;
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const error = new createError('Validation failed', 422);
+    error.data = errors.array();
+    throw error;
+  }
   const todo = new Todo({
     title: title,
     done: done,
@@ -60,6 +70,14 @@ exports.updateToo = (req, res, next) => {
   const todoId = req.params.todoId;
   const title = req.body.title;
   const done = req.body.done;
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const error = new createError('Validation failed', 422);
+    error.data = errors.array();
+    throw error;
+  }
 
   Todo.findById(todoId)
     .then((todo) => {
