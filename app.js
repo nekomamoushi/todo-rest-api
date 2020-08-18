@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('./middlewares/cors');
+
 require('dotenv').config();
 
 const todosRoutes = require('./routes/todos');
@@ -12,15 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Handle CORS
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PUT, PATCH, DELETE'
-  );
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+app.use(cors);
 
 app.use(API_VERSION + '/todos', todosRoutes);
 
