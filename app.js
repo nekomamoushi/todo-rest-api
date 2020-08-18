@@ -1,12 +1,8 @@
 const express = require('express');
-const mongoose = require('mongoose');
+
+const { API_VERSION } = require('./config/index');
 const cors = require('./middlewares/cors');
-
-require('dotenv').config();
-
 const todosRoutes = require('./routes/todos');
-
-const API_VERSION = '/api/v1';
 
 const app = express();
 
@@ -16,6 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 // Handle CORS
 app.use(cors);
 
+// Handle todos routes
 app.use(API_VERSION + '/todos', todosRoutes);
 
 // Handle errors

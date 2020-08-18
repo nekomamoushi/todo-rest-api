@@ -2,34 +2,29 @@
 
 const http = require('http');
 const mongoose = require('mongoose');
-require('dotenv').config();
 
+const { MONGODB_HOST, MONGODB_PASSWORD } = require('../config/index');
 const app = require('../app');
 
 /**
  * Get MongoDb credentials
  */
-const MONGODB_HOST = process.env.MONGODB_HOST;
-const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
 const MONGODB_URI = `mongodb+srv://${MONGODB_HOST}:${MONGODB_PASSWORD}@cluster0.vxrfi.azure.mongodb.net/todos?retryWrites=true&w=majority`;
 
 /**
  * Get port from environment and store in Express.
  */
-
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
-
 const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 mongoose
   .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((result) => {
