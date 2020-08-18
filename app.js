@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Handle CORS
-app.use(cors);
+app.use(cors());
 
 // Handle todos routes
 app.use(API_VERSION + '/todos', todosRoutes);
