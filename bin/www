@@ -7,34 +7,6 @@ const { MONGODB_HOST, MONGODB_PASSWORD } = require('../config/index');
 const app = require('../app');
 
 /**
- * Get MongoDb credentials
- */
-const MONGODB_URI = `mongodb+srv://${MONGODB_HOST}:${MONGODB_PASSWORD}@cluster0.vxrfi.azure.mongodb.net/todos?retryWrites=true&w=majority`;
-
-/**
- * Get port from environment and store in Express.
- */
-const port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-const server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-mongoose
-  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then((result) => {
-    server.listen(port);
-  })
-  .catch((error) => {
-    console.log('Something went wrong with Mongoose');
-  });
-
-/**
  * Normalize a port into a number, string, or false.
  */
 
@@ -53,3 +25,40 @@ function normalizePort(val) {
 
   return false;
 }
+
+/**
+ * Get MongoDb credentials
+ */
+const MONGODB_URI = `mongodb+srv://${MONGODB_HOST}:${MONGODB_PASSWORD}@cluster0.vxrfi.azure.mongodb.net/todos?retryWrites=true&w=majority`;
+
+/**
+ * Get port from environment and store in Express.
+ */
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+const server = http.createServer(app);
+
+/**
+ * Handle unhandled promise rejections
+ */
+process.on('unhandledRejection', (err, promise) => {
+  console.log(err.message);
+  // Close server and exit process
+  server.close(() => process.exit(1));
+});
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+mongoose
+  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then((result) => {
+    server.listen(port);
+  })
+  .catch((error) => {
+    console.log('Something went wrong with Mongoose');
+  });
