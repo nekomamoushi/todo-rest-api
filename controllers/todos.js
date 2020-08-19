@@ -1,7 +1,4 @@
-const { validationResult } = require('express-validator');
-
 const Todo = require('../models/todo');
-const createError = require('../helpers/error');
 
 exports.getTodos = (req, res, next) => {
   Todo.find()
@@ -19,38 +16,19 @@ exports.getTodos = (req, res, next) => {
 };
 
 exports.getTodo = (req, res, next) => {
-  const todoId = req.params.todoId;
-  Todo.findById(todoId)
-    .then((todo) => {
-      if (!todo) {
-        const error = createError('Todo Not Found!', 404);
-        throw error;
-      }
-      res.status(200).json({ message: 'Todo found!', todo: todo });
-    })
-    .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      next(error);
-    });
+  const todo = res.locals.todo;
+  res.status(200).json({ message: 'Todo found!', todo: todo });
 };
 
 exports.createTodo = (req, res, next) => {
   const title = req.body.title;
   const done = req.body.done;
 
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    const error = new createError('Validation failed', 422);
-    error.data = errors.array();
-    throw error;
-  }
   const todo = new Todo({
     title: title,
     done: done,
   });
+
   todo
     .save()
     .then((result) => {
@@ -67,28 +45,15 @@ exports.createTodo = (req, res, next) => {
 };
 
 exports.updateToo = (req, res, next) => {
-  const todoId = req.params.todoId;
+  const todo = res.locals.todo;
   const title = req.body.title;
   const done = req.body.done;
 
-  const errors = validationResult(req);
+  todo.title = title;
+  todo.done = done;
 
-  if (!errors.isEmpty()) {
-    const error = new createError('Validation failed', 422);
-    error.data = errors.array();
-    throw error;
-  }
-
-  Todo.findById(todoId)
-    .then((todo) => {
-      if (!todo) {
-        const error = createError('Todo Not Found!', 404);
-        throw error;
-      }
-      todo.title = title;
-      todo.done = done;
-      return todo.save();
-    })
+  todo
+    .save()
     .then((result) => {
       res.status(200).json({ message: 'Todo Updated Succesfully!' });
     })
@@ -103,14 +68,7 @@ exports.updateToo = (req, res, next) => {
 exports.deleteTodo = (req, res, next) => {
   const todoId = req.params.todoId;
 
-  Todo.findById(todoId)
-    .then((todo) => {
-      if (!todo) {
-        const error = createError('Todo Not Found!', 404);
-        throw error;
-      }
-      return Todo.deleteOne({ _id: todoId });
-    })
+  Todo.deleteOne({ _id: todoId })
     .then((result) => {
       res.status(200).json({ message: 'Todo Deleted Succesfully!' });
     })
