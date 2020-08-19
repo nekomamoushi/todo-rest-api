@@ -1,13 +1,19 @@
 const express = require('express');
 const helmet = require('helmet');
+const morgan = require('morgan');
 
-const { API_VERSION } = require('./config/index');
+const { NODE_ENV, API_VERSION } = require('./config/index');
 const cors = require('./middlewares/cors');
 const todosRoutes = require('./routes/todos');
 
 const app = express();
 
 app.use(helmet());
+if (NODE_ENV === 'production') {
+  app.use(morgan('common'));
+} else {
+  app.use(morgan('dev'));
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
