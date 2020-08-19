@@ -1,18 +1,17 @@
 const Todo = require('../models/todo');
 
-exports.getTodos = (req, res, next) => {
-  Todo.find()
-    .then((todos) => {
-      res
-        .status(200)
-        .json({ message: 'Todos fetched successfully!', todos: todos });
-    })
-    .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      next(error);
-    });
+exports.getTodos = async (req, res, next) => {
+  try {
+    const todos = await Todo.find();
+    res
+      .status(200)
+      .json({ message: 'Todos fetched successfully!', todos: todos });
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(error);
+  }
 };
 
 exports.getTodo = (req, res, next) => {
@@ -20,7 +19,7 @@ exports.getTodo = (req, res, next) => {
   res.status(200).json({ message: 'Todo found!', todo: todo });
 };
 
-exports.createTodo = (req, res, next) => {
+exports.createTodo = async (req, res, next) => {
   const title = req.body.title;
   const done = req.body.done;
 
@@ -29,22 +28,18 @@ exports.createTodo = (req, res, next) => {
     done: done,
   });
 
-  todo
-    .save()
-    .then((result) => {
-      res
-        .status(201)
-        .json({ message: 'Todo Created successfully!', todo: todo });
-    })
-    .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      next(error);
-    });
+  try {
+    await todo.save();
+    res.status(201).json({ message: 'Todo Created successfully!', todo: todo });
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(error);
+  }
 };
 
-exports.updateToo = (req, res, next) => {
+exports.updateToo = async (req, res, next) => {
   const todo = res.locals.todo;
   const title = req.body.title;
   const done = req.body.done;
@@ -52,30 +47,26 @@ exports.updateToo = (req, res, next) => {
   todo.title = title;
   todo.done = done;
 
-  todo
-    .save()
-    .then((result) => {
-      res.status(200).json({ message: 'Todo Updated Succesfully!' });
-    })
-    .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      next(error);
-    });
+  try {
+    await todo.save();
+    res.status(200).json({ message: 'Todo Updated Succesfully!' });
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(error);
+  }
 };
 
-exports.deleteTodo = (req, res, next) => {
+exports.deleteTodo = async (req, res, next) => {
   const todoId = req.params.todoId;
-
-  Todo.deleteOne({ _id: todoId })
-    .then((result) => {
-      res.status(200).json({ message: 'Todo Deleted Succesfully!' });
-    })
-    .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      next(error);
-    });
+  try {
+    await Todo.deleteOne({ _id: todoId });
+    res.status(200).json({ message: 'Todo Deleted Succesfully!' });
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(error);
+  }
 };
