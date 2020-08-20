@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { MONGODB } = require('./index');
 
 const connectDatabase = () => {
-  const MONGODB_URI = `mongodb+srv://${MONGODB.HOST}:${MONGODB.PASSWORD}@cluster0.vxrfi.azure.mongodb.net/todos?retryWrites=true&w=majority`;
+  const MONGODB_URI = `mongodb+srv://${MONGODB.USER}:${MONGODB.PASSWORD}@${MONGODB.HOST}/${MONGODB.DB_NAME}?retryWrites=true&w=majority`;
 
   return mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
