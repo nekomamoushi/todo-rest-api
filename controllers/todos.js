@@ -49,7 +49,7 @@ exports.updateToo = async (req, res, next) => {
 
   try {
     await todo.save();
-    res.status(200).json({ message: 'Todo Updated Succesfully!' });
+    res.status(200).json({ message: 'Todo updated successfully!' });
   } catch (error) {
     if (!error.statusCode) {
       error.statusCode = 500;
@@ -62,7 +62,7 @@ exports.deleteTodo = async (req, res, next) => {
   const todoId = req.params.todoId;
   try {
     await Todo.deleteOne({ _id: todoId });
-    res.status(200).json({ message: 'Todo Deleted Succesfully!' });
+    res.status(200).json({ message: 'Todo deleted successfully!' });
   } catch (error) {
     if (!error.statusCode) {
       error.statusCode = 500;

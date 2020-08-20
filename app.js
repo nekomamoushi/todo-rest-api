@@ -25,7 +25,6 @@ app.use(API_VERSION + '/todos', todosRoutes);
 
 // Handle errors
 app.use((error, req, res, next) => {
-  console.log(error.message);
   const status = error.statusCode || 500;
   const message = error.message;
   const data = error.data;

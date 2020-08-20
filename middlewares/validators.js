@@ -8,7 +8,7 @@ exports.validateId = async (req, res, next) => {
     param('todoId').custom((value) => {
       return Todo.findById(value).then((found) => {
         if (!found) {
-          return Promise.reject('Todo Not Found');
+          return Promise.reject('Todo Not Found!');
         }
         todo = found;
       });
@@ -19,7 +19,7 @@ exports.validateId = async (req, res, next) => {
     await Promise.all(validators.map((validator) => validator.run(req)));
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new createError('Todo Not Found', 404);
+      const error = new createError('Todo Not Found!', 404);
       throw error;
     }
     res.locals.todo = todo;
@@ -36,6 +36,7 @@ exports.validateBody = async (req, res, next) => {
   const validators = [
     body('title')
       .isString()
+      .withMessage('Must be a string')
       .isLength({ min: 5 })
       .trim()
       .withMessage('Must be at least 5 chars long'),
@@ -48,7 +49,7 @@ exports.validateBody = async (req, res, next) => {
     await Promise.all(validators.map((validator) => validator.run(req)));
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new createError('Validation failed', 422);
+      const error = new createError('Validation failed!', 422);
       error.data = errors.array();
       throw error;
     }
@@ -67,7 +68,7 @@ exports.validateIdAndBody = async (req, res, next) => {
     param('todoId').custom((value) => {
       return Todo.findById(value).then((found) => {
         if (!found) {
-          return Promise.reject('Todo Not Found');
+          return Promise.reject('Todo Not Found!');
         }
         todo = found;
       });
@@ -86,7 +87,7 @@ exports.validateIdAndBody = async (req, res, next) => {
     await Promise.all(validators.map((validator) => validator.run(req)));
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new createError('Validation failed', 422);
+      const error = new createError('Validation failed!', 422);
       error.data = errors.array();
       throw error;
     }
