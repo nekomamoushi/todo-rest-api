@@ -11,7 +11,7 @@ const app = express();
 app.use(helmet());
 if (NODE_ENV === 'production') {
   app.use(morgan('common'));
-} else {
+} else if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 app.use(express.json());

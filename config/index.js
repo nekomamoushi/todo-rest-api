@@ -9,6 +9,7 @@ module.exports = {
     PASSWORD: process.env.MONGODB_PASSWORD,
     HOST: process.env.MONGODB_HOST,
     DB_NAME: process.env.MONGODB_DB_NAME,
+    DB_TEST: process.env.MONGODB_TEST_DB_NAME,
   },
   PORT: process.env.PORT,
 };
