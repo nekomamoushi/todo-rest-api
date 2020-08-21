@@ -1,12 +1,17 @@
 # Todo Rest API
 
+[![GitHub license](https://img.shields.io/github/license/nekomamoushi/todo-rest-api.svg)](https://github.com/nekomamushi/todo-rest-api/blob/master/LICENSE)
+
+A ready-to-use boilerplate for REST API Development with Node.js, Express, and MongoDB
+
 ## Features
 
 - Node.js: Express App ready to use
-- MongoDB with [mongoose](https://mongoosejs.com/)
+- MongoDB with [Mongoose](https://mongoosejs.com/)
 - Basic CRUD Operations: GET / POST / PUT / DELETE
 - Api Validation
 - CORS Headers
+- Security HTTP Headers with [Helmet](https://helmetjs.github.io/)
 - Tests cases with [Jest](https://jestjs.io/)
 
 ## Installation
